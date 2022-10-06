@@ -152,8 +152,9 @@ forever(function () {
             ........eeeeeeeeeeeeeeee
             `, SpriteKind.BonusFood)
         tiles.placeOnTile(Bonus, tiles.getTileLocation(randint(1, 17), randint(1, 12)))
-        pause(5000)
+        pause(randint(5000, 6500))
         Bonus.destroy()
+        Max_length += 5
     }
 })
 forever(function () {
