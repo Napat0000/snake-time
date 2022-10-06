@@ -33,6 +33,9 @@ sprites.onOverlap(SpriteKind.Head, SpriteKind.Food, function (sprite, otherSprit
         game.over(true)
     }
 })
+sprites.onOverlap(SpriteKind.Body, SpriteKind.BonusFood, function (sprite, otherSprite) {
+    tiles.placeOnTile(Bonus, tiles.getTileLocation(randint(1, 17), randint(1, 12)))
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     blockSettings.clear()
     game.reset()
