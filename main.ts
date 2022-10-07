@@ -2,6 +2,7 @@ namespace SpriteKind {
     export const Head = SpriteKind.create()
     export const Body = SpriteKind.create()
     export const BonusFood = SpriteKind.create()
+    export const notsnake = SpriteKind.create()
 }
 function Score_setup () {
     Numscore = 0
@@ -32,6 +33,7 @@ sprites.onOverlap(SpriteKind.Head, SpriteKind.Food, function (sprite, otherSprit
     if (Snakelenght >= 200) {
         game.over(true)
     }
+    music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 718, 553, 95, 255, 150, SoundExpressionEffect.Tremolo, InterpolationCurve.Logarithmic), SoundExpressionPlayMode.UntilDone)
 })
 sprites.onOverlap(SpriteKind.Body, SpriteKind.BonusFood, function (sprite, otherSprite) {
     tiles.placeOnTile(Bonus, tiles.getTileLocation(randint(1, 17), randint(1, 12)))
@@ -65,6 +67,7 @@ sprites.onOverlap(SpriteKind.Head, SpriteKind.BonusFood, function (sprite, other
     Numscore += 3
     Max_length += 5
     otherSprite.destroy()
+    music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 1728, 2526, 0, 255, 150, SoundExpressionEffect.Tremolo, InterpolationCurve.Curve), SoundExpressionPlayMode.UntilDone)
 })
 controller.up.onEvent(ControllerButtonEvent.Released, function () {
     if (!(Hdir == 180)) {
@@ -125,6 +128,7 @@ let Bdir: number[] = []
 Hdir = 90
 let Max_length = 6
 Snakelenght = 1
+music.setVolume(255)
 Score_setup()
 forever(function () {
     if (Snakelenght >= Max_length) {
@@ -155,9 +159,13 @@ forever(function () {
             ........eeeeeeeeeeeeeeee
             `, SpriteKind.BonusFood)
         tiles.placeOnTile(Bonus, tiles.getTileLocation(randint(1, 17), randint(1, 12)))
+        music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 3724, 3771, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
         pause(randint(5000, 6500))
-        Bonus.destroy()
-        Max_length += 5
+        if (Snakelenght >= Max_length) {
+            Bonus.destroy()
+            Max_length += 5
+            music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 5000, 5000, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
+        }
     }
 })
 forever(function () {
