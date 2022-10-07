@@ -4,6 +4,9 @@ namespace SpriteKind {
     export const BonusFood = SpriteKind.create()
     export const notsnake = SpriteKind.create()
 }
+namespace StatusBarKind {
+    export const BonusBar = StatusBarKind.create()
+}
 function Score_setup () {
     Numscore = 0
     if (blockSettings.exists("Hi")) {
@@ -18,7 +21,7 @@ function Score_setup () {
 }
 sprites.onOverlap(SpriteKind.Head, SpriteKind.Food, function (sprite, otherSprite) {
     Snakelenght += 1
-    Numscore += 1
+    Numscore = Numscore + randint(1, 2)
     Body.unshift(sprites.create(img`
         b b b b b b b c 
         b c c c c c c f 
@@ -64,8 +67,10 @@ sprites.onOverlap(SpriteKind.Body, SpriteKind.Food, function (sprite, otherSprit
     tiles.placeOnRandomTile(otherSprite, assets.tile`myTile0`)
 })
 sprites.onOverlap(SpriteKind.Head, SpriteKind.BonusFood, function (sprite, otherSprite) {
-    Numscore += 3
+    Eated = true
+    Numscore = Numscore + Bonusnumscore
     Max_length += 5
+    BonusBar.destroy()
     otherSprite.destroy()
     music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 1728, 2526, 0, 255, 150, SoundExpressionEffect.Tremolo, InterpolationCurve.Curve), SoundExpressionPlayMode.UntilDone)
 })
@@ -79,12 +84,15 @@ scene.onOverlapTile(SpriteKind.Head, assets.tile`myTile`, function (sprite, loca
         game.over(false)
     }
 })
+let BonusBar: StatusBarSprite = null
+let Bonusnumscore = 0
 let Bonus: Sprite = null
 let Hiscore: TextSprite = null
 let Score: TextSprite = null
 let Numhiscore = 0
 let Numscore = 0
 let Snakelenght = 0
+let Eated = false
 let Hdir = 0
 let Body: Sprite[] = []
 let Head: Sprite = null
@@ -127,11 +135,13 @@ let Bx: number[] = []
 let Bdir: number[] = []
 Hdir = 90
 let Max_length = 6
+Eated = false
 Snakelenght = 1
 music.setVolume(255)
 Score_setup()
 forever(function () {
     if (Snakelenght >= Max_length) {
+        Eated = false
         Bonus = sprites.create(img`
             ........................
             ........................
@@ -159,10 +169,24 @@ forever(function () {
             ........eeeeeeeeeeeeeeee
             `, SpriteKind.BonusFood)
         tiles.placeOnTile(Bonus, tiles.getTileLocation(randint(1, 17), randint(1, 12)))
+        Bonusnumscore = randint(40, 50)
+        BonusBar = statusbars.create(160, 8, StatusBarKind.BonusBar)
+        BonusBar.setPosition(80, scene.screenHeight() - 4)
+        BonusBar.max = Bonusnumscore
+        BonusBar.setColor(9, 1)
+        BonusBar.setBarBorder(1, 1)
         music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 3724, 3771, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
-        pause(randint(5000, 6500))
+        while (Bonusnumscore >= 0) {
+            Bonusnumscore += -1
+            if (!(Eated)) {
+                BonusBar.value = Bonusnumscore
+            }
+            pause(100)
+        }
         if (Snakelenght >= Max_length) {
+            BonusBar.destroy()
             Bonus.destroy()
+            Bonusnumscore = 0
             Max_length += 5
             music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 5000, 5000, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
         }
