@@ -139,6 +139,9 @@ Eated = false
 Snakelenght = 1
 music.setVolume(255)
 Score_setup()
+Bx.unshift(Head.x)
+By.unshift(Head.y)
+Bdir.unshift(Hdir)
 forever(function () {
     if (Snakelenght >= Max_length) {
         Eated = false
