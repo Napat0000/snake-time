@@ -47,46 +47,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
     if (!(Hdir == 0)) {
-        Head.setImage(img`
-            d d d d d d d b 
-            d b b b b b b c 
-            d b b b b b b c 
-            d b b b b b b c 
-            d b b b b b b c 
-            d 1 1 b b 1 1 c 
-            d 1 f b b f 1 c 
-            b c c c c c c c 
-            `)
         Hdir = 180
     }
 })
 controller.right.onEvent(ControllerButtonEvent.Released, function () {
     if (!(Hdir == 270)) {
-        Head.setImage(img`
-            d d d d d d d b 
-            d b b b b 1 1 c 
-            d b b b b 1 f c 
-            d b b b b b b c 
-            d b b b b b b c 
-            d b b b b 1 f c 
-            d b b b b 1 1 c 
-            b c c c c c c c 
-            `)
         Hdir = 90
     }
 })
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     if (!(Hdir == 90)) {
-        Head.setImage(img`
-            d d d d d d d b 
-            d 1 1 b b b b c 
-            d f 1 b b b b c 
-            d b b b b b b c 
-            d b b b b b b c 
-            d f 1 b b b b c 
-            d 1 1 b b b b c 
-            b c c c c c c c 
-            `)
         Hdir = 270
     }
 })
@@ -106,7 +76,7 @@ function Go_through_in_the_wall (Head_dir: number, Switch_Id: boolean) {
         Head.y = 12
         Go_head(Head_dir)
         Head.y += -8
-    } else if (Head.x <= 16 && Head_dir == 270) {
+    } else if (Head.x <= 8 && Head_dir == 270) {
         Head.x = scene.screenWidth() - 4
         Go_head(Head_dir)
         Head.x += 8
@@ -128,16 +98,6 @@ sprites.onOverlap(SpriteKind.Head, SpriteKind.BonusFood, function (sprite, other
 function Go_head (Dir: number) {
     if (Dir == 0) {
         Head.y += -8
-    } else if (Dir == 90) {
-        Head.x += 8
-    } else if (Dir == 180) {
-        Head.y += 8
-    } else {
-        Head.x += -8
-    }
-}
-controller.up.onEvent(ControllerButtonEvent.Released, function () {
-    if (!(Hdir == 180)) {
         Head.setImage(img`
             d d d d d d d b 
             d 1 f b b f 1 c 
@@ -148,6 +108,46 @@ controller.up.onEvent(ControllerButtonEvent.Released, function () {
             d b b b b b b c 
             b c c c c c c c 
             `)
+    } else if (Dir == 90) {
+        Head.x += 8
+        Head.setImage(img`
+            d d d d d d d b 
+            d b b b b 1 1 c 
+            d b b b b 1 f c 
+            d b b b b b b c 
+            d b b b b b b c 
+            d b b b b 1 f c 
+            d b b b b 1 1 c 
+            b c c c c c c c 
+            `)
+    } else if (Dir == 180) {
+        Head.y += 8
+        Head.setImage(img`
+            d d d d d d d b 
+            d b b b b b b c 
+            d b b b b b b c 
+            d b b b b b b c 
+            d b b b b b b c 
+            d 1 1 b b 1 1 c 
+            d 1 f b b f 1 c 
+            b c c c c c c c 
+            `)
+    } else {
+        Head.x += -8
+        Head.setImage(img`
+            d d d d d d d b 
+            d 1 1 b b b b c 
+            d f 1 b b b b c 
+            d b b b b b b c 
+            d b b b b b b c 
+            d f 1 b b b b c 
+            d 1 1 b b b b c 
+            b c c c c c c c 
+            `)
+    }
+}
+controller.up.onEvent(ControllerButtonEvent.Released, function () {
+    if (!(Hdir == 180)) {
         Hdir = 0
     }
 })
